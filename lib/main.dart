@@ -226,33 +226,69 @@ class FormDemo extends StatefulWidget {
 }
 
 class _FormDemoState extends State<FormDemo> {
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _passwordCOntroller = TextEditingController();
+  GlobalKey _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('表单'),
       ),
-      body: Center(
+      body: Form(
+        key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
-            TextField(
+            TextFormField(
               autofocus: true,
+              controller: _usernameController,
               decoration: InputDecoration(
-                  labelText: '用户名', prefixIcon: Icon(Icons.ac_unit)),
+                labelText: '用户名',
+                hintText: '请输入用户名',
+                icon: Icon(Icons.person)
+              ),
+              validator: (v) {
+                return v!.trim().isNotEmpty ? null : '用户名不能为空';
+              },
             ),
-            TextField(
+            TextFormField(
+              controller: _passwordCOntroller,
               decoration: InputDecoration(
-                  labelText: "密码", prefixIcon: Icon(Icons.contact_mail_sharp)),
+                labelText: '密码',
+                hintText: '请输入密码',
+                icon: Icon(Icons.password)
+              ),
               obscureText: true,
+              validator: (v) {
+                return v!.trim().length > 5 ? null : '密码不少于6位';
+              },
             ),
-            ElevatedButton(
-                onPressed: () {
-                  print('login');
-                },
-                child: Text('登录'))
+            Padding(
+              padding: const EdgeInsets.only(top: 28.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text('登录'),
+                      ),
+                      onPressed: () {
+                        print(_formKey.currentState);
+                        if ((_formKey.currentState as FormState).validate()) {
+                          print('验证通过');
+                        }
+                      },
+                    )
+                  )
+                ],
+              ),
+            )
           ],
         ),
-      ),
+      )
     );
   }
 }
