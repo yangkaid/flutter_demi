@@ -1,17 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:flutter_demo/routes.dart';
+
 
 void main() {
-  runApp(const MyApp());
+  final GoRoute _router = GoRouter(
+    routes: routerList.map((route) {
+      return GoRoute(
+        path: route['path'],
+        builder: route['builder']
+    );
+    }).toList()
+  ) as GoRoute;
+  runApp(MyApp(router: _router));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final GoRoute router;
+  const MyApp({super.key, required this.router});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     Map<String, WidgetBuilder> routes;
-    return MaterialApp(
+    return MaterialApp.router(
         title: 'Flutter Demo',
         theme: ThemeData(
           // This is the theme of your application.
@@ -32,12 +44,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
         ),
-        routes: {
-          "/": (context) =>
-              const MyHomePage(title: 'Flutter Demo Home Page123', count: 10),
-          "new_page": (context) => const NewPage(),
-          "form_demo": (context) => const FormDemo()
-        });
+        routerConfig: router,
+    );
   }
 }
 
