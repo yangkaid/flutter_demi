@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_demo/main.dart';
+import 'package:go_router/go_router.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title, required this.count});
@@ -118,14 +120,17 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton.icon(
               icon: Icon(Icons.control_point_sharp),
               onPressed: () {
-                Navigator.pushNamed(context, 'new_page');
+                // Navigator.pushNamed(context, 'NewPage');
+                // context.go('/new-page');
+                context.goNamed('NewPage');
               },
               label: Text('打开新页面'),
             ),
             TextButton.icon(
               onPressed: () {
                 print('handle');
-                Navigator.pushNamed(context, 'form_demo');
+                // Navigator.pushNamed(context, 'FormDemo');
+                context.go('/form-demo');
               },
               label: const Text('添加'),
               icon: Icon(Icons.info),
